@@ -52,17 +52,19 @@ C D E F | G A B c |`);
     return true;
   };
 
+  const handleInteraction = () => {
+    setNeedsInteraction(false);
+    alert('✅ Interação aceite! Agora pode tentar tocar música.');
+  };
+
   const playMusic = () => {
     if (isPlaying) {
       stopMusic();
       return;
     }
 
-    // Testar áudio primeiro
-    try {
-      testAudioContext();
-    } catch (audioError) {
-      alert('⚠️ Por favor, interaja com a página primeiro (clique em algo) para permitir áudio.');
+    if (needsInteraction) {
+      handleInteraction();
       return;
     }
 
@@ -140,20 +142,31 @@ C D E F | G A B c |`);
         </div>
 
         <div className="controls">
-          <button
-            onClick={playMusic}
-            className={`play-button ${isPlaying ? 'stop' : ''}`}
-            disabled={!abcCode.trim()}
-          >
-            {isPlaying ? '⏹️ Parar' : '▶️ Tocar Música'}
-          </button>
-          <button
-            onClick={renderMusic}
-            className="render-button"
-            disabled={!abcCode.trim()}
-          >
-            🔄 Renderizar
-          </button>
+          {needsInteraction ? (
+            <button
+              onClick={handleInteraction}
+              className="interaction-button"
+            >
+              👆 Clique aqui primeiro para permitir áudio
+            </button>
+          ) : (
+            <>
+              <button
+                onClick={playMusic}
+                className={`play-button ${isPlaying ? 'stop' : ''}`}
+                disabled={!abcCode.trim()}
+              >
+                {isPlaying ? '⏹️ Parar' : '▶️ Tocar Música'}
+              </button>
+              <button
+                onClick={renderMusic}
+                className="render-button"
+                disabled={!abcCode.trim()}
+              >
+                🔄 Renderizar
+              </button>
+            </>
+          )}
         </div>
       </div>
 

@@ -74,7 +74,7 @@ C D E F | G A B c |`);
         visualObj.midi.start();
       } else {
         console.error('Could not initialize MIDI playback');
-        alert('⚠️ Erro: Não foi possível iniciar a reprodução. A biblioteca ABCJS pode não estar a carregar corretamente.\n\nTente:");
+        alert('⚠️ Erro: Não foi possível iniciar a reprodução. A biblioteca ABCJS pode não estar a carregar corretamente.\n\nTente carregar um exemplo válido de código ABC.');
       }
     } catch (error) {
       console.error('Error in playback:', error);

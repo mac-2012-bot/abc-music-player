@@ -1,0 +1,216 @@
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f8f9fa;
+  color: #333;
+}
+
+.app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #e9ecef;
+}
+
+header h1 {
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+header p {
+  color: #6c757d;
+  font-size: 1.1em;
+}
+
+.editor-section {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 25px;
+  margin-bottom: 30px;
+}
+
+.file-upload {
+  margin-bottom: 20px;
+}
+
+.upload-button {
+  display: inline-block;
+  background-color: #007bff;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+  text-decoration: none;
+}
+
+.upload-button:hover {
+  background-color: #0056b3;
+}
+
+.editor-container {
+  margin-bottom: 20px;
+}
+
+.abc-editor {
+  width: 100%;
+  min-height: 200px;
+  padding: 15px;
+  border: 2px solid #dee2e6;
+  border-radius: 5px;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  resize: vertical;
+  background-color: #f8f9fa;
+  color: #212529;
+  transition: border-color 0.3s;
+}
+
+.abc-editor:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.controls {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.play-button, .render-button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.play-button {
+  background-color: #28a745;
+  color: white;
+}
+
+.play-button:hover:not(:disabled) {
+  background-color: #218838;
+  transform: translateY(-2px);
+}
+
+.play-button.stop {
+  background-color: #dc3545;
+}
+
+.play-button.stop:hover:not(:disabled) {
+  background-color: #c82333;
+}
+
+.render-button {
+  background-color: #17a2b8;
+  color: white;
+}
+
+.render-button:hover:not(:disabled) {
+  background-color: #138496;
+  transform: translateY(-2px);
+}
+
+.play-button:disabled, .render-button:disabled {
+  background-color: #adb5bd;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.music-display {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 25px;
+  margin-bottom: 30px;
+}
+
+.music-display h2 {
+  color: #2c3e50;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.music-svg {
+  text-align: center;
+  min-height: 200px;
+  border: 1px solid #dee2e6;
+  border-radius: 5px;
+  padding: 20px;
+  overflow-x: auto;
+}
+
+.instructions {
+  background-color: #e9f7fe;
+  border-left: 4px solid #007bff;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.instructions h3 {
+  color: #007bff;
+  margin-top: 0;
+}
+
+.instructions ol {
+  line-height: 1.6;
+  padding-left: 20px;
+}
+
+.instructions li {
+  margin-bottom: 10px;
+}
+
+.instructions a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.instructions a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .app {
+    padding: 10px;
+  }
+
+  .controls {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .play-button, .render-button {
+    width: 100%;
+  }
+
+  .abc-editor {
+    min-height: 150px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .app {
+    padding: 5px;
+  }
+
+  .music-svg {
+    min-height: 150px;
+    padding: 15px;
+  }
+}

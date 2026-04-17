@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 import ABCJS from 'abcjs';
 
@@ -9,6 +9,7 @@ M:4/4
 L:1/8
 K:C
 C D E F | G A B c |`);
+  const [needsInteraction, setNeedsInteraction] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
   const svgRef = useRef(null);
 
@@ -38,20 +39,6 @@ C D E F | G A B c |`);
     }
   };
 
-  const testAudioContext = () => {
-    // Testar se o browser permite áudio
-    const context = new (window.AudioContext || window.webkitAudioContext)();
-    const oscillator = context.createOscillator();
-    const gainNode = context.createGain();
-
-    oscillator.connect(gainNode);
-    gainNode.connect(context.destination);
-    gainNode.gain.value = 0; // Silencioso
-    oscillator.start();
-    oscillator.stop(context.currentTime + 0.1);
-    return true;
-  };
-
   const handleInteraction = () => {
     setNeedsInteraction(false);
     alert('✅ Interação aceite! Agora pode tentar tocar música.');
@@ -59,7 +46,7 @@ C D E F | G A B c |`);
 
   const playMusic = () => {
     if (isPlaying) {
-      stopMusic();
+      setIsPlaying(false);
       return;
     }
 
@@ -69,7 +56,6 @@ C D E F | G A B c |`);
     }
 
     try {
-      // Tentar inicializar MIDI com fallback
       const visualObj = ABCJS.renderAbc(svgRef.current, abcCode, {
         staffwidth: 700,
         scale: 1.0,
@@ -82,7 +68,6 @@ C D E F | G A B c |`);
         }
       });
 
-      // Tentar iniciar reprodução com fallback
       if (visualObj && visualObj.midi) {
         setIsPlaying(true);
         try {
@@ -108,7 +93,7 @@ C D E F | G A B c |`);
     setIsPlaying(false);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     renderMusic();
   }, [abcCode]);
 

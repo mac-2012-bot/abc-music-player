@@ -45,6 +45,7 @@ C D E F | G A B c |`);
     }
 
     try {
+      // Tentar inicializar MIDI com fallback
       const visualObj = ABCJS.renderAbc(svgRef.current, abcCode, {
         staffwidth: 700,
         scale: 1.0,
@@ -57,16 +58,25 @@ C D E F | G A B c |`);
         }
       });
 
+      // Tentar iniciar reprodução com fallback
       if (visualObj && visualObj.midi) {
         setIsPlaying(true);
-        visualObj.midi.start();
+        try {
+          visualObj.midi.start();
+        } catch (midiError) {
+          console.error('MIDI start error:', midiError);
+          alert('⚠️ O browser pode ter bloqueado a reprodução de áudio.\n\nClique no botão "Tocar Música" novamente ou tente num browser diferente.');
+          setIsPlaying(false);
+        }
       } else {
         console.error('Could not initialize MIDI playback - visualObj:', visualObj);
-        alert('⚠️ Erro: Não foi possível iniciar a reprodução.\n\nPossíveis causas:\n1. A biblioteca ABCJS não carregou corretamente\n2. O browser bloqueou a reprodução de áudio\n3. O código ABC tem erros de sintaxe\n\nTente carregar um exemplo válido de código ABC.');
+        alert('⚠️ Erro: Não foi possível iniciar a reprodução.\n\nPossíveis causas:\n1. O browser bloqueou a reprodução de áudio\n2. A biblioteca ABCJS não carregou corretamente\n3. O código ABC tem erros de sintaxe\n\nTente carregar um exemplo válido de código ABC.');
+        setIsPlaying(false);
       }
     } catch (error) {
       console.error('Error in playback:', error);
       alert('❌ Erro ao processar o código ABC: ' + error.message);
+      setIsPlaying(false);
     }
   };
 

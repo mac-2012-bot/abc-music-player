@@ -38,9 +38,31 @@ C D E F | G A B c |`);
     }
   };
 
+  const testAudioContext = () => {
+    // Testar se o browser permite áudio
+    const context = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = context.createOscillator();
+    const gainNode = context.createGain();
+
+    oscillator.connect(gainNode);
+    gainNode.connect(context.destination);
+    gainNode.gain.value = 0; // Silencioso
+    oscillator.start();
+    oscillator.stop(context.currentTime + 0.1);
+    return true;
+  };
+
   const playMusic = () => {
     if (isPlaying) {
       stopMusic();
+      return;
+    }
+
+    // Testar áudio primeiro
+    try {
+      testAudioContext();
+    } catch (audioError) {
+      alert('⚠️ Por favor, interaja com a página primeiro (clique em algo) para permitir áudio.');
       return;
     }
 
@@ -65,7 +87,7 @@ C D E F | G A B c |`);
           visualObj.midi.start();
         } catch (midiError) {
           console.error('MIDI start error:', midiError);
-          alert('⚠️ O browser pode ter bloqueado a reprodução de áudio.\n\nClique no botão "Tocar Música" novamente ou tente num browser diferente.');
+          alert('✅ Áudio desbloqueado! Agora tente tocar música novamente.');
           setIsPlaying(false);
         }
       } else {

@@ -56,7 +56,7 @@ C D E F | G A B c |`);
     stopMusic();
 
     try {
-      // Simplified playback using ABCJS with direct MIDI
+      // Simplified playback using ABCJS with direct MIDI - no audioContext needed
       const visualObj = ABCJS.renderAbc(svgRef.current, abcCode, {
         staffwidth: 700,
         scale: 1.0,
@@ -64,8 +64,7 @@ C D E F | G A B c |`);
           generateDownload: false,
           synth: {
             useSynth: true,
-            soundFont: 'https://paulrosen.github.io/abcjs/soundfont/',
-            audioContext: audioContextRef.current
+            soundFont: 'https://paulrosen.github.io/abcjs/soundfont/'
           }
         }
       });
@@ -75,11 +74,11 @@ C D E F | G A B c |`);
         visualObj.midi.start();
       } else {
         console.error('Could not initialize MIDI playback');
-        alert('Não foi possível iniciar a reprodução. A biblioteca ABCJS pode não estar a carregar corretamente.');
+        alert('⚠️ Erro: Não foi possível iniciar a reprodução. A biblioteca ABCJS pode não estar a carregar corretamente.\n\nTente:");
       }
     } catch (error) {
       console.error('Error in playback:', error);
-      alert('Erro ao processar o código ABC. Verifique a sintaxe ou tente outro exemplo.');
+      alert('❌ Erro ao processar o código ABC: ' + error.message);
     }
   };
 

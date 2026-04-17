@@ -56,12 +56,7 @@ C D E F | G A B c |`);
     stopMusic();
 
     try {
-      // Parse ABC and generate MIDI
-      const parser = new ABCJS.parse.Parse(abcCode, {
-        warning: (text) => console.warn('ABCJS warning:', text),
-      });
-
-      // Simplified playback using ABCJS midi output
+      // Simplified playback using ABCJS with direct MIDI
       const visualObj = ABCJS.renderAbc(svgRef.current, abcCode, {
         staffwidth: 700,
         scale: 1.0,
@@ -83,8 +78,8 @@ C D E F | G A B c |`);
         alert('Não foi possível iniciar a reprodução. A biblioteca ABCJS pode não estar a carregar corretamente.');
       }
     } catch (error) {
-      console.error('Error parsing ABC:', error);
-      alert('Erro ao processar o código ABC. Verifique a sintaxe.');
+      console.error('Error in playback:', error);
+      alert('Erro ao processar o código ABC. Verifique a sintaxe ou tente outro exemplo.');
     }
   };
 

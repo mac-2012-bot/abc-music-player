@@ -11,8 +11,6 @@ K:C
 C D E F | G A B c |`);
   const [isPlaying, setIsPlaying] = useState(false);
   const svgRef = useRef(null);
-  const audioContextRef = useRef(null);
-  const synthRef = useRef(null);
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
@@ -34,7 +32,6 @@ C D E F | G A B c |`);
       ABCJS.renderAbc(svgRef.current, abcCode, {
         staffwidth: 700,
         scale: 1.0,
-        add_classes: true,
       });
     } catch (error) {
       console.error('Error rendering ABC:', error);
@@ -47,16 +44,7 @@ C D E F | G A B c |`);
       return;
     }
 
-    // Initialize Web Audio API
-    if (!audioContextRef.current) {
-      audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)();
-    }
-
-    // Stop any previous playback
-    stopMusic();
-
     try {
-      // Simplified playback using ABCJS with direct MIDI - no audioContext needed
       const visualObj = ABCJS.renderAbc(svgRef.current, abcCode, {
         staffwidth: 700,
         scale: 1.0,
@@ -74,7 +62,7 @@ C D E F | G A B c |`);
         visualObj.midi.start();
       } else {
         console.error('Could not initialize MIDI playback - visualObj:', visualObj);
-        alert('⚠️ Erro: Não foi possível iniciar a reprodução.\n\nPossíveis causas:\n1. A biblioteca ABCJS não carregou corretamente\n2. O browser bloqueou a reprodução de áudio\n3. O código ABC tem erros de sintaxe\n\nTente:");
+        alert('⚠️ Erro: Não foi possível iniciar a reprodução.\n\nPossíveis causas:\n1. A biblioteca ABCJS não carregou corretamente\n2. O browser bloqueou a reprodução de áudio\n3. O código ABC tem erros de sintaxe\n\nTente carregar um exemplo válido de código ABC.');
       }
     } catch (error) {
       console.error('Error in playback:', error);
@@ -83,18 +71,9 @@ C D E F | G A B c |`);
   };
 
   const stopMusic = () => {
-    if (synthRef.current) {
-      synthRef.current.stop();
-      synthRef.current = null;
-    }
-    if (audioContextRef.current) {
-      audioContextRef.current.close();
-      audioContextRef.current = null;
-    }
     setIsPlaying(false);
   };
 
-  // Render music on component mount and when abcCode changes
   React.useEffect(() => {
     renderMusic();
   }, [abcCode]);
@@ -103,7 +82,6 @@ C D E F | G A B c |`);
     <div className="app">
       <header>
         <h1>🎵 ABC Music Player</h1>
-        <p>Insira ou carregue um ficheiro com código ABC para tocar música</p>
       </header>
 
       <div className="editor-section">
@@ -124,15 +102,7 @@ C D E F | G A B c |`);
           <textarea
             value={abcCode}
             onChange={(e) => setAbcCode(e.target.value)}
-            placeholder="Insira o código ABC aqui...
-Exemplo:
-X:1
-T:Mary Had a Little Lamb
-M:6/8
-L:1/8
-K:C
-E D C | D C E | E E E | D D D |
-E D C | D C E | E E E2 | C C C ||"
+            placeholder="Insira o código ABC aqui..."
             className="abc-editor"
           />
         </div>
@@ -168,7 +138,13 @@ E D C | D C E | E E E2 | C C C ||"
           <li>Clique em "Tocar Música" para ouvir a música</li>
           <li>Clique em "Parar" para interromper a reprodução</li>
         </ol>
-        <p><strong>Dica:</strong> Pode encontrar exemplos de código ABC em <a href="https://abcnotation.com/wiki/abc:standard:v2.1" target="_blank" rel="noopener noreferrer">ABC Standard</a></p>
+        <p><strong>Dica:</strong> Use este exemplo:</p>
+        <pre>X:1
+T:Sample Tune
+M:4/4
+L:1/8
+K:C
+C D E F | G A B c |</pre>
       </div>
     </div>
   );
